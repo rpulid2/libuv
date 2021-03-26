@@ -7,10 +7,10 @@ addons:
         coverity_scan:
                 project:
                         name: rpulid2/libuv
-                        version: 1.4
+                        version: master
                         description: Libuv fork for coverity scan
 
                 notification_email: rodrigo.pulido@intel.com
-                build_command_prepend: ./configure
+                build_command_prepend: ./autogen.sh
                 build_command: make
                 branch_pattern: coverity_scan
