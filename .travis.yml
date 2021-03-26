@@ -25,7 +25,6 @@ addons:
                         description: Libuv fork for coverity scan
 
                 notification_email: rodrigo.pulido@intel.com
-                build_command_prepend: ./autogen.sh
-                build_command_prepend: ./configure
+                build_command_prepend: ./autogen.sh && ./configure
                 build_command: make
                 branch_pattern: coverity_scan
