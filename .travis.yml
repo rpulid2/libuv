@@ -1,0 +1,16 @@
+env:
+        global:
+                # COVERITY_SCAN_TOKEN
+                # ** specific to your project **
+                - secure: "xxxx"
+addons:
+        coverity_scan:
+                project:
+                        name: rpulid2/libuv
+                        version: 1.4
+                        description: Libuv fork for coverity scan
+
+                notification_email: rodrigo.pulido@intel.com
+                build_command_prepend: ./configure
+                build_command: make
+                branch_pattern: coverity_scan
