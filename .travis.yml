@@ -72,9 +72,10 @@ script:
     # Build main
     ############################################################################
     - wget https://scan.coverity.com/download/linux64 --post-data "token=1xppCsz11eCJSkAFh515Fw&project=libuv_fork" -O coverity_tool.tgz
-    - tar -xvzf coverity_tool.tgz
+    - tar -xzf coverity_tool.tgz
     - ls
     - mkdir -p build
     - cd build
     - cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Coverage -DBUILD_TESTS=ON .. 
-    - make
+    - ../cov-analysis-linux64-2020.09/bin/cov-configure --gcc
+    - ../cov-analysis-linux64-2020.09/bin/cov-build make
