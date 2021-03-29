@@ -1,26 +1,31 @@
-dist: trusty
-sudo: required
-language:
-        - cpp
-compiler:
-        - gcc
+env:
+  global:
+    # COVERITY_SCAN_TOKEN
+    # ** specific to your project **
+    - secure: "xxxx"
+
 addons:
-         coverity_scan:
-                 project:
-                        name: rpulid2/libuv
-                        version: master
-                        description: Libuv fork for coverity scan
-                 notification_email: rodrigo.pulido@intel.com
-                 build_command_prepend: mkdir -p build && cd build && cmake ../
-                 build_command: make
-                 branch_pattern: coverity_scan
-          apt:
-                  sources:
-                         - ubuntu-toolchain-r-test
-                  packages:
-                          - gcc-6
-                          - g++-6
-                          - cmake
-                           
+  coverity_scan:
 
+    # GitHub project metadata
+    # ** specific to your project **
+    project:
+      name: rpulid2/libuv
+      version: master
+      description: Libuv for for Coverity testting
 
+    # Where email notification of build analysis results will be sent
+    notification_email: rodrigo.pulido@intel.com
+
+    # Commands to prepare for build_command
+    # ** likely specific to your build **
+    build_command_prepend: mkdir -p build && cd build && cmake ../
+
+    # The command that will be added as an argument to "cov-build" to compile your project for analysis,
+    # ** likely specific to your build **
+    build_command: make
+
+    # Pattern to match selecting branches that will run analysis. We recommend leaving this set to 'coverity_scan'.
+    # Take care in resource usage, and consider the build frequency allowances per
+    #   https://scan.coverity.com/faq#frequency
+    branch_pattern: coverity_scan
