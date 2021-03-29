@@ -1,83 +1,33 @@
-language: cpp
-
 env:
   global:
-    # Ubuntu version
-    - LINUX_DIST=trusty
-    #    - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
-    # Global build options and C++ flags
-    #    - CXX_FLAGS="-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow"
-    # Misc
-    - RUN_TESTS=false
-    - COVERAGE=false
+    # COVERITY_SCAN_TOKEN
+    # ** specific to your project **
     - secure: "xxxx"
 
-matrix:
-  include:
-    - os: linux
-      dist: trusty
-      compiler: gcc
-      addons:
-       apt:
-         packages: &precise_latest_boost_packages
-           - gcc-4.8
-           - g++-4.8
-           #- gcov-4.9
-           - clang-3.7
-           - valgrind
-           # Misc
-           #- python-yaml
-           #- lcov
-           #- libopencv-dev
-         sources: &precise_latest_boost_sources
-         #- ubuntu-toolchain-r-test
-             #- llvm-toolchain-precise-3.7
-
 addons:
-         coverity_scan:
-                 project:
-                        name: rpulid2/libuv_fork
-                        version: coverity_scan
-                        description: Libuv fork for coverity scan
-                 notification_email: rodrigo.pulido@intel.com
-                 build_command_prepend: mkdir -p build && cd build && cmake ../
-                 build_command: make
-                 branch_pattern: coverity_scan
+  coverity_scan:
 
+    # GitHub project metadata
+    # ** specific to your project **
+    project:
+      name: rpulid2/libuv_fork
+      version: coverity_scan
+      description: Libuv for for Coverity testting
 
-before_install:
-    # Combine global build options with OS/compiler-dependent options
-    - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
-    - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
+    # Where email notification of build analysis results will be sent
+    notification_email: rodrigo.pulido@intel.com
 
-install:
-    - if [ "$CXX" = "clang++" ] && [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
-    - echo ${PATH}
-    - echo ${CXX}
-    - ${CXX} --version
-    - ${CXX} -v
-      #- sudo pip install codecov
-    
-    # Download and install recent cmake
-    - |
-      if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
-        CMAKE_URL="http://www.cmake.org/files/v3.5/cmake-3.5.1-Linux-x86_64.tar.gz"
-        mkdir -p ${DEPS_DIR}/cmake
-        travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${DEPS_DIR}/cmake
-        export PATH=${DEPS_DIR}/cmake/bin:${PATH}
-      fi
+    # Commands to prepare for build_command
+    # ** likely specific to your build **
+    build_command_prepend: mkdir -p build && cd build && cmake ../
 
-script:
-    ############################################################################
-    # Build main
-    ############################################################################
-    - wget https://scan.coverity.com/download/linux64 --post-data "token=1xppCsz11eCJSkAFh515Fw&project=libuv_fork" -O coverity_tool.tgz
-    - tar -xzf coverity_tool.tgz
-    - ls
-    - mkdir -p build
-    - cd build
-    - cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Coverage -DBUILD_TESTS=ON .. 
-    - ../cov-analysis-linux64-2020.09/bin/cov-configure --gcc
-    - ../cov-analysis-linux64-2020.09/bin/cov-build --dir cov-int make
-    - tar -czf cov-int.tar.gz cov-int
-    - curl --form token=1xppCsz11eCJSkAFh515Fw --form email=rodrigo.pulido@intel.com --form file=cov-int.tar.gz --form version="1.4" --form description="Description" https://scan.coverity.com/builds?project=libuv_fork
+    # The command that will be added as an argument to "cov-build" to compile your project for analysis,
+    # ** likely specific to your build **
+    build_command: make
+
+    # Pattern to match selecting branches that will run analysis. We recommend leaving this set to 'coverity_scan'.
+    # Take care in resource usage, and consider the build frequency allowances per
+    #   https://scan.coverity.com/faq#frequency
+    branch_pattern: coverity_scan
+
+script: if [ ${COVERITY_SCAN_BRANCH} != 1 ]; then cmake . && make ; fi
