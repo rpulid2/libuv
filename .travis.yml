@@ -31,12 +31,7 @@ matrix:
                     - llvm-toolchain-precise-3.7
 
 # Build steps
-script: if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then 
-        mkdir -p build
-        cd build
-        cmake ../
-        make ;
-        fi
+script: if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then  mkdir -p build &&  cd build && cmake ../ && make ;fi
 
 env:
         global:
