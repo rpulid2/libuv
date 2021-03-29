@@ -1,3 +1,17 @@
+#travis configuration for coverage testing
+language: c
+
+#sudo: false # only for faster builds
+
+# Compiler selection
+compiler:
+  - clang
+  - gcc
+
+
+# Build steps
+script: if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then make ; fi
+
 env:
         global:
                 # COVERITY_SCAN_TOKEN
@@ -21,7 +35,7 @@ install:
 addons:
         coverity_scan:
                 project:
-                        name: rpulid2/libuv
+                        name: libuv_fork
                         version: master
                         description: Libuv fork for coverity scan
 
@@ -29,4 +43,4 @@ addons:
                 build_command_prepend: mkdir -p build && cd build
                 build_command_prepend: cmake ../
                 build_command: make
-                branch_pattern: master
+                branch_pattern: coverity_scan
