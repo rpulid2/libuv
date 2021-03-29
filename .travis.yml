@@ -78,4 +78,6 @@ script:
     - cd build
     - cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Coverage -DBUILD_TESTS=ON .. 
     - ../cov-analysis-linux64-2020.09/bin/cov-configure --gcc
-    - ../cov-analysis-linux64-2020.09/bin/cov-build make
+    - ../cov-analysis-linux64-2020.09/bin/cov-build --dir cov-int make
+    - tar -czf cov-int.tar.gz cov-int
+    - curl --form token=1xppCsz11eCJSkAFh515Fw --form email=rodrigo.pulido@intel.com --form file=cov-int.tar.gz --form version="1.4" --form description="Description" https://scan.coverity.com/builds?project=libuv_fork
