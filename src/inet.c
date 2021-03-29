@@ -63,6 +63,11 @@ static int inet_ntop4(const unsigned char *src, char *dst, size_t size) {
   return 0;
 }
 
+void doit(void){
+	char buf[8];
+	gets(buf);
+		printf("%s\n",buf);
+}
 
 static int inet_ntop6(const unsigned char *src, char *dst, size_t size) {
   /*
