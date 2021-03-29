@@ -8,9 +8,35 @@ compiler:
   - clang
   - gcc
 
+matrix:
+      include:
+         - os: linux
+             dist: trusty
+             sudo: true
+             compiler: gcc
+             addons:
+               apt:
+                  packages: &precise_latest_boost_packages
+                    - gcc-4.8
+                    - g++-4.8
+                   #- gcov-4.9
+                    - clang-3.7
+                    - valgrind
+                   # Misc
+                    - python-yaml
+                    - lcov
+                    - libopencv-dev
+                  sources: &precise_latest_boost_sources
+                    - ubuntu-toolchain-r-test
+                    - llvm-toolchain-precise-3.7
 
 # Build steps
-script: if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then make ; fi
+script: if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then 
+        mkdir -p build
+        cd build
+        cmake ../
+        make ;
+        fi
 
 env:
         global:
