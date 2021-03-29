@@ -30,19 +30,19 @@ matrix:
            #- lcov
            #- libopencv-dev
          sources: &precise_latest_boost_sources
-           - ubuntu-toolchain-r-test
-           - llvm-toolchain-precise-3.7
+         #- ubuntu-toolchain-r-test
+             #- llvm-toolchain-precise-3.7
 
 addons:
          coverity_scan:
                  project:
-                        name: rpulid2/libuv
-                        version: master
+                        name: rpulid2/libuv_fork
+                        version: coverity_scan
                         description: Libuv fork for coverity scan
                  notification_email: rodrigo.pulido@intel.com
                  build_command_prepend: mkdir -p build && cd build && cmake ../
                  build_command: make
-                 branch_pattern: master
+                 branch_pattern: coverity_scan
 
 
 before_install:
