@@ -10,6 +10,7 @@ env:
     # Misc
     - RUN_TESTS=true
     - COVERAGE=false
+    - secure: "xxxx"
 
 matrix:
   include:
@@ -31,6 +32,17 @@ matrix:
          sources: &precise_latest_boost_sources
            - ubuntu-toolchain-r-test
            - llvm-toolchain-precise-3.7
+         coverity_scan:
+                 project:
+                        name: rpulid2/libuv
+                        version: master
+                        description: Libuv fork for coverity scan
+                 notification_email: rodrigo.pulido@intel.com
+                 build_command_prepend: mkdir -p build && cd build
+                 build_command_prepend: cmake ../
+                 build_command: make
+                 branch_pattern: master
+
     
 before_install:
     # Combine global build options with OS/compiler-dependent options
@@ -67,4 +79,3 @@ script:
 
 
 after_success:
-    - codecov -t c376990f-2ad6-4f7b-bbdb-5378a52e295c -X gcov
