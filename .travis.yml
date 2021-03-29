@@ -4,11 +4,11 @@ env:
   global:
     # Ubuntu version
     - LINUX_DIST=trusty
-    - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+    #    - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
     # Global build options and C++ flags
-    - CXX_FLAGS="-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow"
+    #    - CXX_FLAGS="-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow"
     # Misc
-    - RUN_TESTS=true
+    - RUN_TESTS=false
     - COVERAGE=false
     - secure: "xxxx"
 
@@ -26,9 +26,9 @@ matrix:
            - clang-3.7
            - valgrind
            # Misc
-           - python-yaml
-           - lcov
-           - libopencv-dev
+           #- python-yaml
+           #- lcov
+           #- libopencv-dev
          sources: &precise_latest_boost_sources
            - ubuntu-toolchain-r-test
            - llvm-toolchain-precise-3.7
@@ -56,7 +56,7 @@ install:
     - echo ${CXX}
     - ${CXX} --version
     - ${CXX} -v
-    - sudo pip install codecov
+      #- sudo pip install codecov
     
     # Download and install recent cmake
     - |
@@ -67,13 +67,11 @@ install:
         export PATH=${DEPS_DIR}/cmake/bin:${PATH}
       fi
 
-script:
+      #script:
     ############################################################################
     # Build main
     ############################################################################
-     - mkdir -p build
-     - cd build
-     - cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Coverage -DBUILD_TESTS=ON .. 
-     - make
-
-
+    #- mkdir -p build
+    # - cd build
+    # - cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Coverage -DBUILD_TESTS=ON .. 
+    # - make
