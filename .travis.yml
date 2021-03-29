@@ -10,7 +10,7 @@ addons:
     # GitHub project metadata
     # ** specific to your project **
     project:
-      name: rpulid2/libuv
+      name: rpulid2/libuv_fork
       version: master
       description: Libuv for for Coverity testting
 
