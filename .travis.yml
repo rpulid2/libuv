@@ -5,29 +5,39 @@ env:
     - secure: "xxxx"
 
 addons:
+        apt:
+                packages:
+                        - cmake
+                        - g++-6.5
   coverity_scan:
 
     # GitHub project metadata
     # ** specific to your project **
     project:
       name: rpulid2/libuv_fork
-      version: coverity_scan
-      description: Libuv for for Coverity testting
+      description: "Libuv for for Coverity testting"
 
     # Where email notification of build analysis results will be sent
     notification_email: rodrigo.pulido@intel.com
 
     # Commands to prepare for build_command
     # ** likely specific to your build **
-    build_command_prepend:  cmake .
+    build_command_prepend:  "cov-configure --comptype gcc --compiler gcc-6.5"
 
     # The command that will be added as an argument to "cov-build" to compile your project for analysis,
     # ** likely specific to your build **
-    build_command: make
+    build_command: make VERBOSE=1"
 
     # Pattern to match selecting branches that will run analysis. We recommend leaving this set to 'coverity_scan'.
     # Take care in resource usage, and consider the build frequency allowances per
     #   https://scan.coverity.com/faq#frequency
     branch_pattern: coverity_scan
 
-script: if [ ${COVERITY_SCAN_BRANCH} != 1 ]; then cmake . && make ; fi
+script:
+        - if [[ "${COVERITY_SCAN_BRANCH}" == 1 ]];
+          then
+          echo "Don't build on coverity_scan branch.";
+          exit 0;
+          fi
+        - make
+             
