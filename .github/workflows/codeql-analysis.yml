@@ -65,6 +65,5 @@ jobs:
           cmake --build .   
     
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
-      with:
-       queries: +security-and-quality,security-extended
+    queries:
+     - uses: security-and-quality
