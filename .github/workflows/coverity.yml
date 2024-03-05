@@ -2,9 +2,6 @@
 name: Coverity Scan
 
 # We only want to test official release code, not every pull request.
-on:
-  push:
-    branches: [main]
 on: workflow_dispatch
 jobs:
   coverity:
