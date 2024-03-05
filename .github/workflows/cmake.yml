@@ -31,12 +31,30 @@ jobs:
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-
+    - name: Setup Coverity
+      working-directory: ${{github.workspace}}/coverity/
+      run: |
+        wget -O coverity_tool.tar.gz https://scan.coverity.com/download/linux64 --post-data "token=${{ secrets.COVERITY_SCAN_TOKEN }}&project=libuv_fork"
+        tar zxvf coverity_tool.tar.gz
+        echo "cov-analysis-linux64-*/bin" >> $GITHUB_PATH
+        cov-configure --template --compiler cc --comptype gcc
+        cov-configure --template --compiler c++ --comptype g++
+        cov-configure --gcc
+        cov-configure --clang
     - name: Build
       working-directory: ${{github.workspace}}/build
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: cmake --build . --config $BUILD_TYPE
+      run: |
+       cov-build --dir ${{github.workspace}}/build/cov-int cmake --build . --config $BUILD_TYPE
+       tar czvf project.tgz ${{github.workspace}}/build/cov-int
+       curl --form token ${{ secrets.COVERITY_SCAN_TOKEN }} \
+         --form email = ${{ secrets.COVERITY_SCAN_EMAIL }} \
+         --form file=@project.tgx \
+         --form version="Version" \
+         --from description="Test GH Action" \
+         https://scan.coverity.com/projects/22799/builds/init \
+        | tee response
 
     - name: Test
       working-directory: ${{github.workspace}}/build
