@@ -48,14 +48,14 @@ jobs:
       run: |
        ${{github.workspace}}/build/cov-analysis-linux64-2023.6.2/bin/cov-build --dir ${{github.workspace}}/build/cov-int cmake --build . --config $BUILD_TYPE
        tar czvf project.tgz ${{github.workspace}}/build/cov-int
-       curl --form token ${{ secrets.COVERITY_SCAN_TOKEN }} \
-         --form email = ${{ secrets.COVERITY_SCAN_EMAIL }} \
-         --form file=@project.tgx \
-         --form version="Version" \
-         --from description="Test GH Action" \
+       curl -d token ${{ secrets.COVERITY_SCAN_TOKEN }} \
+         -d email = ${{ secrets.COVERITY_SCAN_EMAIL }} \
+         -d file=@project.tgx \
+         -d version="Version" \
+         -d description="Test GH Action" \
          https://scan.coverity.com/projects/22799/builds/init \
-        | tee response
-
+         | tee response
+       
     - name: Test
       working-directory: ${{github.workspace}}/build
       shell: bash
