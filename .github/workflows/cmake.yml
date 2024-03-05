@@ -54,6 +54,10 @@ jobs:
        --form version="Version" \
        --form description="Description" \
        https://scan.coverity.com/builds?project=libuv_fork
+    - uses: actions/upload-artifact@v3
+     with: 
+       name: CoverityIdir
+       path: project.tgz
        
     - name: Test
       working-directory: ${{github.workspace}}/build
