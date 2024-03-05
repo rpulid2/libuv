@@ -5,7 +5,7 @@ name: Coverity Scan
 on:
   push:
     branches: [main]
-
+on: workflow_dispatch
 jobs:
   coverity:
     runs-on: ubuntu-latest
