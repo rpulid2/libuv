@@ -47,7 +47,7 @@ jobs:
       # Execute the build.  You can specify a specific target with "--target <NAME>"
       run: |
        ${{github.workspace}}/build/cov-analysis-linux64-2023.6.2/bin/cov-build --dir ${{github.workspace}}/build/cov-int cmake --build . --config $BUILD_TYPE
-       tar czvf project.tgz ${{github.workspace}}/build/cov-int
+       tar czvf project.tgz --directory=${{github.workspace}}/build/ cov-int
        curl --form token=${{ secrets.COVERITY_SCAN_TOKEN }} \
        --form email=${{ secrets.COVERITY_SCAN_EMAIL }} \
        --form file=@project.tgz \
