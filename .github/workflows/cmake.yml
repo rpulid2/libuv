@@ -32,10 +32,10 @@ jobs:
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
     - name: Setup Coverity
-      working-directory: ${{github.workspace}}/coverity/
+      working-directory: ${{github.workspace}}/build
       run: |
-        wget -O coverity_tool.tar.gz https://scan.coverity.com/download/linux64 --post-data "token=${{ secrets.COVERITY_SCAN_TOKEN }}&project=libuv_fork"
-        tar zxvf coverity_tool.tar.gz
+        wget https://scan.coverity.com/download/linux64 --post-data "token=${{ secrets.COVERITY_SCAN_TOKEN }}&project=libuv_fork"
+        tar zxvf linux64
         echo "cov-analysis-linux64-*/bin" >> $GITHUB_PATH
         cov-configure --template --compiler cc --comptype gcc
         cov-configure --template --compiler c++ --comptype g++
