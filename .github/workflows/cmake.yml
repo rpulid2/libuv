@@ -54,10 +54,6 @@ jobs:
        --form version="Version" \
        --form description="Description" \
        https://scan.coverity.com/builds?project=libuv_fork
-    - uses: actions/upload-artifact@v3
-     with: 
-       name: CoverityIdir
-       path: project.tgz
        
     - name: Test
       working-directory: ${{github.workspace}}/build
@@ -65,3 +61,10 @@ jobs:
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C $BUILD_TYPE
+
+          
+    - uses: actions/upload-artifact@v4
+      with: 
+       name: CoverityIdir
+       path: ${{github.workspace}}/build/project.tgz
+
